@@ -1,16 +1,29 @@
 # .github/workflows/main.yml
-
 on:
   schedule:
-  - cron: '0 12 * * *' # every day at noon
-
+    - cron: '0 12 * * *' # every day at noon
 jobs:
   single-commit:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - name: Generate random number
+      run: |
+        node -e "console.log(Math.floor(Math.random() * 10) + 1)" > commit_count.txt
+    - name: Create random commits
+      run: |
+        cat commit_count.txt | while read count; do
+          for (( i=1; i<=count; i++ )); do
+            git add .
+            git commit -m "Random commit $i"
+          done
+        done
     - uses: bcanseco/github-contribution-graph-action@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GIT_EMAIL: naqi72.one@gmail.com # replace me
+        GIT_EMAIL: you@youremail.com # replace me   
+
