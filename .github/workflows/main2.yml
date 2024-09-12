@@ -1,0 +1,15 @@
+# .github/workflows/main.yml
+on:  push
+
+jobs:
+  single-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: bcanseco/github-contribution-graph-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GIT_EMAIL: naqi72.one@gmail.com # replace me
+        MIN_COMMITS_PER_DAY: 2
+        MAX_COMMITS_PER_DAY: 10
